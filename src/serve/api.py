@@ -4,7 +4,7 @@ import pandas as pd
 
 app = Flask(__name__)
 
-with open('model.pkl', 'rb') as f:
+with open('models/linear_regression_0.2.0.pkl', 'rb') as f:
     model = pickle.load(f)
 
 @app.route('/')
