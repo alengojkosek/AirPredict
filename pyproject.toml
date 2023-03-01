@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "airpredict"
+version = "0.1.0"
+description = "Naloga 1"
+authors = ["alengojkosek <alen.gojkosek@student.um.si>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pickleshare = "0.7.5"
+flask = "^2.2.3"
+pandas = "^1.5.3"
+sklearn = "^0.0.post1"
+scikit-learn = "^1.2.1"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.2.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

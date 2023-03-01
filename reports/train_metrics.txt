@@ -1,0 +1,3 @@
+Training R-squared score: 0.95
+Training MSE: 28.87
+Training MAE: 3.53
