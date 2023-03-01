@@ -11,7 +11,6 @@ python = "^3.9"
 pickleshare = "0.7.5"
 flask = "^2.2.3"
 pandas = "^1.5.3"
-sklearn = "^0.0.post1"
 scikit-learn = "^1.2.1"
 pytest = "^7.2.1"
 
