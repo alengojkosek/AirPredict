@@ -6,7 +6,7 @@ import os
 
 def get_latest_csv_version():
     # Find the latest version of the CSV file
-    file_list = [f for f in os.listdir('/data/raw') if f.startswith('raw_arsopodatki_') and f.endswith('.csv')]
+    file_list = [f for f in os.listdir('/data/raw/') if f.startswith('raw_arsopodatki_') and f.endswith('.csv')]
     if len(file_list) == 0:
         return 1
     latest_version = max([int(f.split('_')[-1].split('.')[0]) for f in file_list])
