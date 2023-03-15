@@ -24,6 +24,8 @@ jobs:
       - name: Test with pytest
         run: |
           poetry run pytest
+      - name: add permission to run
+        run: chmod +x src/data/fetch_data.py
       - name: Fetch data
         run: poetry run src/data/fetch_data.py
       - name: Cache
