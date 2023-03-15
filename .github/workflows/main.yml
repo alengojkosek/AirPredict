@@ -31,4 +31,4 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Fetch data
-        run: python fetch_data.py
+        run: python src/data/fetch_data.py
