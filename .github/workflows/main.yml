@@ -3,7 +3,7 @@ name: Python package
 on:
   push:
   schedule:
-    - cron: '0 11 * * *' # This will run the job every day at 11 am UTC
+    - cron: '12 11 * * *' # This will run the job every day at 11 am UTC
 
 jobs:
   build:
@@ -27,10 +27,5 @@ jobs:
       - name: add permission to run
         run: chmod +x src/data/fetch_data.py
       - name: Fetch data
-        run: poetry run src/data/fetch_data.py
-      - name: Cache
-        uses: actions/cache@v2.1.8
-        with:
-          path: air-predict
-          key: ${{ runner.os }}-air-predict
+        run: poetry run fetch_data.py
 
