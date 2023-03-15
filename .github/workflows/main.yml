@@ -34,7 +34,9 @@ jobs:
       - name: Test with pytest
         run: |
           poetry run pytest
-      - name: add permission to run
+      - name: add permission to run fetch data
         run: chmod +x src/data/fetch_data.py
+      - name: add permission to write csv
+        run: chmod -R 777 data/raw/
       - name: Fetch data
         run: poetry run python src/data/fetch_data.py
