@@ -39,4 +39,10 @@ jobs:
       - name: add permission to write csv
         run: chmod -R 777 data/raw/
       - name: Fetch data
-        run: poetry run src/data/fetch_data.py
+        run: poetry run python src/data/fetch_data.py
+      - name: Print contents of data/raw directory
+        run: ls -l data/raw
+      - name: Print permissions of data/raw directory
+        run: ls -ld data/raw
+
+
