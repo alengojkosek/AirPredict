@@ -25,4 +25,10 @@ jobs:
         run: |
           poetry run pytest
       - name: Fetch data
-        run: python src/data/fetch_data.py
+        run: poetry run src/data/fetch_data.py
+      - name: Cache
+        uses: actions/cache@v2.1.8
+        with:
+          path: air-predict
+          key: ${{ runner.os }}-air-predict
+
