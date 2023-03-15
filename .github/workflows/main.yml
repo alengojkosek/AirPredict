@@ -1,9 +1,7 @@
-name: Python package
+name: Build & test
 
 on:
   push:
-  schedule:
-    - cron: '58 15 * * *' # This will run the job every day at 11 am UTC
 
 jobs:
   build:
@@ -23,24 +21,5 @@ jobs:
         run: poetry install --no-interaction --no-root
       - name: Test with pytest
         run: poetry run pytest
-      - name: add permission to run fetch data
-        run: chmod +x src/data/fetch_data.py
-      - name: add permission to write csv
-        run: chmod -R 777 data/raw/
-      - name: Fetch data
-        run: poetry run python src/data/fetch_data.py
-      - name: Git global
-        run: git config --global user.email "alen.gojkosek@student.um.si" && git config --global user.name "alengojkosek"
-      - name: Commit changes
-        run: git add . && git commit -m'new dataset'
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.TOKEN }}
-          branch: ${{ github.ref }}
-      - name: Print contents of data/raw directory
-        run: ls -l data/raw
-      - name: Print permissions of data/raw director
-        run: ls -ld data/raw
 
 
