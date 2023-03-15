@@ -75,5 +75,9 @@ df_arso['datum_od'] = pd.to_datetime(df_arso['datum_od'])
 # merge the two dataframes on the time and datum_do columns
 merged_df = pd.merge(df_meteo, df_arso, left_on='time', right_on='datum_do')
 
-csv_versioning = get_latest_csv_version()
-merged_df.to_csv(f'./data/raw/raw_arsopodatki_{csv_versioning}.csv')
+try:
+    csv_versioning = get_latest_csv_version()
+    merged_df.to_csv(f'./data/raw/raw_arsopodatki_{csv_versioning}.csv')
+except Exception as e:
+    print(f"An error occurred while saving the CSV file: {str(e)}")
+
