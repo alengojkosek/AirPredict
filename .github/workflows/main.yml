@@ -1,15 +1,16 @@
 name: Python package
 
-on: [push]
+on:
+  push:
+  schedule:
+    - cron: '43 10 * * *' # This will run the job every day at 11 am UTC
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: ["3.9"]
-
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
@@ -23,9 +24,11 @@ jobs:
       - name: Test with pytest
         run: |
           poetry run pytest
-
-on:
-  schedule:
-    # * is a special character in YAML so you have to quote this string
-    - cron:  '30 5 * * *'
-
+          
+  fetch_data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Fetch data
+        run: python AirPredict/src/data/fetch_data.py
