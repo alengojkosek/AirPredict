@@ -19,7 +19,6 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-          cache: poetry
       - name: Install dependencies
         run: poetry install --no-interaction --no-root
       - name: Test with pytest
@@ -30,6 +29,8 @@ jobs:
         run: chmod -R 777 data/raw/
       - name: Fetch data
         run: poetry run python src/data/fetch_data.py
+      - name: Git global
+        run: git config --global user.email "alen.gojkosek@student.um.si" && git config --global user.name "alengojkosek"
       - name: Commit changes
         run: git add . && git commit -m'new dataset'
       - name: Push changes
