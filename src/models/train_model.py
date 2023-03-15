@@ -4,20 +4,25 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 import pickle
 
-df = pd.read_csv('cleaned_arsopodatki.csv')
+# Load the dataset
+df = pd.read_csv('cleaned_arsopodatki_5.csv')
 
 x = df.drop('pm10', axis=1)
 y = df['pm10']
 
-X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
+# Split the dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=42)
 
 model = LinearRegression()
 
 model.fit(X_train, y_train)
 
-with open('linear_regression_0.2.0.pkl', 'wb') as f:
+# Save the model to disk
+with open('LG_model_3.pkl', 'wb') as f:
     pickle.dump(model, f)
 
+
+# Use the model to make predictions on the training data
 y_pred_train = model.predict(X_train)
 
 # Evaluate the performance of the model on the training data
