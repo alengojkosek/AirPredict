@@ -1,17 +1,28 @@
 name: Python package
 
-on: [push]
+on:
+  push:
+  schedule:
+    - cron: '12 11 * * *' # This will run the job every day at 11 am UTC
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: ["3.9"]
-
     steps:
       - uses: actions/checkout@v3
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cache/pypoetry
+            ~/.local/share/virtualenvs/
+          key: ${{ runner.os }}-python-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-python-${{ matrix.python-version }}-
+            ${{ runner.os }}-python-
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
@@ -23,9 +34,7 @@ jobs:
       - name: Test with pytest
         run: |
           poetry run pytest
-
-on:
-  schedule:
-    # * is a special character in YAML so you have to quote this string
-    - cron:  '30 5 * * *'
-
+      - name: add permission to run
+        run: chmod +x src/data/fetch_data.py
+      - name: Fetch data
+        run: poetry run python src/data/fetch_data.py
