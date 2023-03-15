@@ -33,7 +33,10 @@ jobs:
       - name: Commit changes
         run: git add . && git commit -m'new dataset'
       - name: Push changes
-        run: git push
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.TOKEN }}
+          branch: ${{ github.ref }}
       - name: Print contents of data/raw directory
         run: ls -l data/raw
       - name: Print permissions of data/raw directory
