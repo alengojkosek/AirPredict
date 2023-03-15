@@ -40,7 +40,7 @@ jobs:
           branch: ${{ github.ref }}
       - name: Print contents of data/raw directory
         run: ls -l data/raw
-      - name: Print permissions of data/raw directory
+      - name: Print permissions of data/raw director
         run: ls -ld data/raw
 
 
