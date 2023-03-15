@@ -6,7 +6,7 @@ import os
 
 def get_latest_csv_version():
     # Find the latest version of the CSV file
-    file_list = [f for f in os.listdir('AirPredict/data/raw') if f.startswith('raw_arsopodatki_') and f.endswith('.csv')]
+    file_list = [f for f in os.listdir('/data/raw') if f.startswith('raw_arsopodatki_') and f.endswith('.csv')]
     if len(file_list) == 0:
         return 1
     latest_version = max([int(f.split('_')[-1].split('.')[0]) for f in file_list])
@@ -76,4 +76,4 @@ df_arso['datum_od'] = pd.to_datetime(df_arso['datum_od'])
 merged_df = pd.merge(df_meteo, df_arso, left_on='time', right_on='datum_do')
 
 csv_versioning = get_latest_csv_version()
-merged_df.to_csv(f'AirPredict/data/raw/raw_arsopodatki_{csv_versioning}.csv')
+merged_df.to_csv(f'/data/raw/raw_arsopodatki_{csv_versioning}.csv')
