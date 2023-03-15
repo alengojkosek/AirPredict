@@ -1,9 +1,7 @@
-name: Python package
+name: Build & test
 
 on:
   push:
-  schedule:
-    - cron: '12 11 * * *' # This will run the job every day at 11 am UTC
 
 jobs:
   build:
@@ -13,28 +11,15 @@ jobs:
         python-version: ["3.9"]
     steps:
       - uses: actions/checkout@v3
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.cache/pypoetry
-            ~/.local/share/virtualenvs/
-          key: ${{ runner.os }}-python-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-python-${{ matrix.python-version }}-
-            ${{ runner.os }}-python-
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
       - name: Install dependencies
-        run: poetry install
+        run: poetry install --no-interaction --no-root
       - name: Test with pytest
-        run: |
-          poetry run pytest
-      - name: add permission to run
-        run: chmod +x src/data/fetch_data.py
-      - name: Fetch data
-        run: poetry run python src/data/fetch_data.py
+        run: poetry run pytest
+
+

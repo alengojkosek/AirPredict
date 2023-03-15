@@ -80,3 +80,7 @@ try:
     merged_df.to_csv(f'./data/raw/raw_arsopodatki_{csv_versioning}.csv')
 except Exception as e:
     print(f"An error occurred while saving the CSV file: {str(e)}")
+<<<<<<< HEAD
+=======
+
+>>>>>>> ae8be1b05cbec395094b1cfc504d6e47d471eb16
