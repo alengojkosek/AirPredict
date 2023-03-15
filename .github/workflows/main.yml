@@ -13,6 +13,16 @@ jobs:
         python-version: ["3.9"]
     steps:
       - uses: actions/checkout@v3
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cache/pypoetry
+            ~/.local/share/virtualenvs/
+          key: ${{ runner.os }}-python-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-python-${{ matrix.python-version }}-
+            ${{ runner.os }}-python-
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
@@ -27,5 +37,4 @@ jobs:
       - name: add permission to run
         run: chmod +x src/data/fetch_data.py
       - name: Fetch data
-        run: poetry run fetch_data.py
-
+        run: poetry run python src/data/fetch_data.py
