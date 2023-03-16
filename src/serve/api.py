@@ -39,38 +39,19 @@ two_days = two_day_advance.strftime('%d.%m.%Y')
 
 @app.route('/air/current/', methods=['GET'])
 def current_air():
-    # check if CSV file exists
-    if os.path.exists('arso_cache.csv'):
-        # load CSV into DataFrame
-        df_arso = pd.read_csv('arso_cache.csv')
-        # convert "datum_do" column to datetime format
-        df_arso['datum_do'] = pd.to_datetime(df_arso['datum_do'])
-        df_arso = df_arso.sort_values(by='datum_do', ascending=False).reset_index(drop=True)
-        df_arso.drop("Unnamed: 0", axis=1, inplace=True)
+    # make API request for all data
+    arso_response = requests.get('https://arsoxmlwrapper.app.grega.xyz/api/air/latest')
+    arso_data = json.loads(arso_response.text)
+    # create DataFrame from API response
+    arso_ptuj = arso_data['stations']
+    # create DataFrame from JSON data
+    df_arso = pd.DataFrame(arso_ptuj)
 
-    else:
-        # make API request for all data
-        arso_response = requests.get('https://arsoxmlwrapper.app.grega.xyz/api/air/archive')
-        arso_data = json.loads(arso_response.text)
-        # create DataFrame from API response
-        df_arso = pd.DataFrame()
-        for item in arso_data:
-            nested_json = json.loads(item["json"])
-            postaja = nested_json["arsopodatki"]["postaja"]
-            df_arso = pd.concat([df_arso, pd.DataFrame(postaja)], ignore_index=True)
-        # filter the rows where the value in the "merilno_mesto" column is "Ptuj"
-        df_arso = df_arso[df_arso["merilno_mesto"] == "Ptuj"]
-        # convert "datum_do" column to datetime format
-        df_arso['datum_do'] = pd.to_datetime(df_arso['datum_do'])
-        # sort DataFrame by "datum_do" column and reset index
-        df_arso = df_arso.sort_values(by='datum_do', ascending=False).reset_index(drop=True)
-        # save DataFrame to CSV file
-        df_arso.to_csv('arso_cache.csv')
+    # filter the rows where the value in the "station" column is "Ptuj"
+    df_arso = df_arso[df_arso["station"] == "Ptuj"]
+    response = {'pm10': df_arso['pm10'].tolist()}
 
-    response = {'pm10': df_arso.iloc[0]['pm10']}
-
-    return jsonify(response)
-
+    return json.dumps(response)
 
 @app.route('/weather/current/', methods=['GET'])
 def current_weather():
