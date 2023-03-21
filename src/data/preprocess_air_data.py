@@ -1,18 +1,7 @@
 import pandas as pd 
 import numpy as np
-import os
 
-def get_latest_csv_version():
-    # Find the latest version of the CSV file
-    file_list = [f for f in os.listdir('.') if f.startswith('cleaned_arsopodatki_') and f.endswith('.csv')]
-    if len(file_list) == 0:
-        return 1
-    latest_version = max([int(f.split('_')[-1].split('.')[0]) for f in file_list])
-    return latest_version + 1
-
-csv_versioning = get_latest_csv_version()
-
-df = pd.read_csv('raw_arsopodatki_1.csv')
+df = pd.read_csv('raw_air_data.csv')
 
 df['time'] = pd.to_datetime(df['time'])
 df['datum_do'] = pd.to_datetime(df['datum_do'])
@@ -30,7 +19,7 @@ df['pm10'] = df['pm10'].fillna(df['pm10'].mean())
 # Drop string columns
 df = df.select_dtypes(include=[float, int])
 
-df.to_csv(f'cleaned_arsopodatki_{csv_versioning}.csv', index=False)
+df.to_csv('preprocessed_air_data.csv', index=False)
 
 #print(df.isnull().sum())
 #print(df.dtypes)

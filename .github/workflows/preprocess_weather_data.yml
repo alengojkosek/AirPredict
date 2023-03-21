@@ -1,0 +1,43 @@
+preprocess_weather_data:
+    needs: fetch_weather_data
+    runs-on: ubuntu-latest
+    
+    outputs:
+        sha_new: ${{steps.sha_new.outputs.SHA_NEW}}
+    
+    permissions:
+        contents: write
+        
+    strategy:
+      matrix:
+        python-version: ["3.9"]
+        
+    steps:
+      - env:
+          SHA_NEW: ${{ needs.fetch_weather_data.outputs.sha_new }}
+        run: echo "$SHA_NEW"
+      - uses: actions/checkout@v3
+        with:
+            ref: ${{ needs.fetch_weather_data.outputs.sha_new }}
+            fetch-depth: 0
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: poetry
+      - name: Install dependencies
+        run: poetry install --no-interaction --no-root
+      - name: preprocess weather data
+        run: poetry run python src/data/preprocess_weather_data.py
+      - name: Commit changes
+        run: dvc add preprocessed_weather_data.csv && dvc push && git commit -m'Updated processed weather data on 'date''
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.TOKEN }}
+          branch: ${{ github.ref }}
+      - name: Get commit SHA and store it in GITHUB_OUTPUT
+        id: sha_new
+        run: echo "SHA_NEW=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
