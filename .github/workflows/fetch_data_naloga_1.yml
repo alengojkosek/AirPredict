@@ -1,0 +1,32 @@
+name: Fetch Data Job
+on:
+  schedule:
+    - cron: '00 17 * * *' # This will run the job every day at 11 am UTC
+
+jobs:
+  fetch_air_data:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9"]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: poetry install --no-interaction --no-root
+      - name: Fetch data
+        run: poetry run python src/data/fetch_air_data.py
+      - name: Git global
+        run: git config --global user.email "alen.gojkosek@student.um.si" && git config --global user.name "alengojkosek"
+      - name: Commit changes
+        run: git add . && git commit -m'new dataset'
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.TOKEN }}
+          branch: ${{ github.ref }}

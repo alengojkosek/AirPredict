@@ -1,14 +1,13 @@
 name: Fetch Data Job
 on:
-  schedule:
-    - cron: '00 17 * * *' # This will run the job every day at 11 am UTC
+  push:
 
 jobs:
-  fetch:
+  fetch_air_data:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.9"]
+        python-version: [ "3.9" ]
     steps:
       - uses: actions/checkout@v3
       - name: Install Poetry
@@ -19,18 +18,143 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: poetry install --no-interaction --no-root
-      - name: add permission to run fetch data
-        run: chmod +x src/data/fetch_data.py
-      - name: add permission to write csv
-        run: chmod -R 777 data/raw/
-      - name: Fetch data
-        run: poetry run python src/data/fetch_data.py
-      - name: Git global
-        run: git config --global user.email "alen.gojkosek@student.um.si" && git config --global user.name "alengojkosek"
-      - name: Commit changes
-        run: git add . && git commit -m'new dataset'
-      - name: Push changes
-        uses: ad-m/github-push-action@master
+
+      - name: fetch_air_data
+        run: poetry run python src/data/fetch_air_data.py
+
+      - name: Commit data to DVC
+        run: |
+          dvc add data/raw/raw_air_data.csv
+          dvc commit -m "Add new raw air dataset"
+
+      - name: Push data to DVC
+        run: dvc push -r origin
+
+
+  preprocess_air_data:
+    runs-on: ubuntu-latest
+    needs: fetch_air_data
+    strategy:
+      matrix:
+        python-version: [ "3.9" ]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
         with:
-          github_token: ${{ secrets.TOKEN }}
-          branch: ${{ github.ref }}
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: poetry install --no-interaction --no-root
+
+      - name: Pull data from DVC
+        run: dvc pull
+
+      - name: preprocess_air_data
+        run: poetry run python src/data/preprocess_air_data.py
+
+      - name: Commit data to DVC
+        run: |
+          dvc add data/processed/preprocessed_air_data.csv
+          dvc commit -m "Add new preprocessed air dataset"
+
+      - name: Push data to DVC
+        run: dvc push -r origin
+
+  fetch_weather_data:
+    runs-on: ubuntu-latest
+    needs: preprocess_air_data
+    strategy:
+      matrix:
+        python-version: [ "3.9" ]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: poetry install --no-interaction --no-root
+
+      - name: Pull data from DVC
+        run: dvc pull
+
+      - name: fetch_weather_data
+        run: poetry run python src/data/fetch_weather_data.py
+
+      - name: Commit data to DVC
+        run: |
+          dvc add data/raw/raw_weather_data.csv
+          dvc commit -m "Add new raw weather dataset"
+
+      - name: Push data to DVC
+        run: dvc push -r origin
+
+  preprocess_weather_data:
+    runs-on: ubuntu-latest
+    needs: fetch_weather_data
+    strategy:
+      matrix:
+        python-version: [ "3.9" ]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: poetry install --no-interaction --no-root
+
+      - name: Pull data from DVC
+        run: dvc pull
+
+      - name: preprocess_weather_data
+        run: poetry run python src/data/preprocess_weather_data.py
+
+      - name: Commit data to DVC
+        run: |
+          dvc add data/processed/preprocessed_weather_data.csv
+          dvc commit -m "Add new preprocessed weather dataset"
+
+      - name: Push data to DVC
+        run: dvc push -r origin
+
+  merge_processed_data:
+    runs-on: ubuntu-latest
+    needs: preprocess_weather_data
+    strategy:
+      matrix:
+        python-version: [ "3.9" ]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: poetry install --no-interaction --no-root
+
+      - name: Pull data from DVC
+        run: dvc pull
+
+      - name: merge_processed_data
+        run: poetry run python src/data/merge_processed_data_data.py
+
+      - name: Commit data to DVC
+        run: |
+          dvc add data/processed/merged_processed_data.csv
+          dvc commit -m "Add new merged processed dataset"
+
+      - name: Push data to DVC
+        run: dvc push -r origin
+
+
+
+
