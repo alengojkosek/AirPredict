@@ -58,8 +58,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: env
-        env:
+      - env:
           SHA_NEW: ${{ needs.fetch_air_data.outputs.sha_new }}
       - uses: actions/checkout@v3
         with:
