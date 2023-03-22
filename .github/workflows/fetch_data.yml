@@ -31,6 +31,9 @@ jobs:
       - name: Install dependencies
         run: poetry install --no-interaction --no-root
 
+      - name: Test air url status
+        run: poetry run python test_air.py
+
       - name: fetch_air_data
         run: poetry run python src/data/fetch_air_data.py
 
@@ -142,6 +145,9 @@ jobs:
           cache: poetry
       - name: Install dependencies
         run: poetry install --no-interaction --no-root
+
+      - name: Test weather url status
+        run: poetry run python test_weather.py
 
       - name: Pull data from DVC
         run: poetry run dvc pull -r origin -f
@@ -259,7 +265,7 @@ jobs:
         run: poetry run dvc pull -r origin -f
 
       - name: merge_processed_data
-        run: poetry run python src/data/merge_processed_data_data.py
+        run: poetry run python src/data/merge_processed_data.py
 
       - name: Git global
         run: git config --global user.email "alen.gojkosek@student.um.si" && git config --global user.name "alengojkosek"
