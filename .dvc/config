@@ -1,4 +1,6 @@
 ['remote "origin"']
+    url = https://dagshub.com/alengojkosek/AirPredict.dvc
     auth = basic
     user = alengojkosek
     password = 517751f04dd3fed553ddf87bf19423c221b6d9ec
+
