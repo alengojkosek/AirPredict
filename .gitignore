@@ -129,3 +129,4 @@ dmypy.json
 .pyre/
 /raw_air_data.csv
 /preprocessed_air_data.csv
+/raw_weather_data.csv
