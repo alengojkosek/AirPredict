@@ -16,6 +16,7 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+          cache: poetry
       - name: Install dependencies
         run: poetry install --no-interaction --no-root
 
@@ -37,7 +38,7 @@ jobs:
           branch: ${{ github.ref }}
 
       - name: Push data dvc
-        run: poetry run dvc push -r origin --auth ${{ secrets.DAGSHUB_TOKEN }}
+        run: poetry run dvc push -r origin
 
 
   preprocess_air_data:
@@ -54,6 +55,7 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+          cache: poetry
       - name: Install dependencies
         run: poetry install --no-interaction --no-root
 
@@ -63,12 +65,21 @@ jobs:
       - name: preprocess_air_data
         run: poetry run python src/data/preprocess_air_data.py
 
-      - name: Commit data to DVC
+      - name: Git global
+        run: git config --global user.email "alen.gojkosek@student.um.si" && git config --global user.name "alengojkosek"
+
+      - name: Commit data
         run: |
           poetry run dvc add preprocessed_air_data.csv
-          poetry run dvc commit -m "Add new preprocessed air dataset"
+          git add preprocessed_air_data.csv.dvc .gitignore && git commit -m'Add new preprocessed air dataset'
 
-      - name: Push data to DVC
+      - name: Push changes git
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.TOKEN }}
+          branch: ${{ github.ref }}
+
+      - name: Push data dvc
         run: poetry run dvc push -r origin
 
   fetch_weather_data:
@@ -85,6 +96,7 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+          cache: poetry
       - name: Install dependencies
         run: poetry install --no-interaction --no-root
 
@@ -94,12 +106,21 @@ jobs:
       - name: fetch_weather_data
         run: poetry run python src/data/fetch_weather_data.py
 
-      - name: Commit data to DVC
+      - name: Git global
+        run: git config --global user.email "alen.gojkosek@student.um.si" && git config --global user.name "alengojkosek"
+
+      - name: Commit data
         run: |
           poetry run dvc add raw_weather_data.csv
-          poetry run dvc commit -m "Add new raw weather dataset"
+          git add raw_weather_data.csv.dvc .gitignore && git commit -m'Add new raw weather dataset'
 
-      - name: Push data to DVC
+      - name: Push changes git
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.TOKEN }}
+          branch: ${{ github.ref }}
+
+      - name: Push data dvc
         run: poetry run dvc push -r origin
 
   preprocess_weather_data:
@@ -116,6 +137,7 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+          cache: poetry
       - name: Install dependencies
         run: poetry install --no-interaction --no-root
 
@@ -125,12 +147,21 @@ jobs:
       - name: preprocess_weather_data
         run: poetry run python src/data/preprocess_weather_data.py
 
-      - name: Commit data to DVC
+      - name: Git global
+        run: git config --global user.email "alen.gojkosek@student.um.si" && git config --global user.name "alengojkosek"
+
+      - name: Commit data
         run: |
           poetry run dvc add preprocessed_weather_data.csv
-          poetry run dvc commit -m "Add new preprocessed weather dataset"
+          git add preprocessed_weather_data.csv.dvc .gitignore && git commit -m'Add new preprocessed weather dataset'
 
-      - name: Push data to DVC
+      - name: Push changes git
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.TOKEN }}
+          branch: ${{ github.ref }}
+
+      - name: Push data dvc
         run: poetry run dvc push -r origin
 
   merge_processed_data:
@@ -147,6 +178,7 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+          cache: poetry
       - name: Install dependencies
         run: poetry install --no-interaction --no-root
 
@@ -156,14 +188,21 @@ jobs:
       - name: merge_processed_data
         run: poetry run python src/data/merge_processed_data_data.py
 
-      - name: Commit data to DVC
+      - name: Git global
+        run: git config --global user.email "alen.gojkosek@student.um.si" && git config --global user.name "alengojkosek"
+
+      - name: Commit data
         run: |
           poetry run dvc add merged_processed_data.csv
-          poetry run dvc commit -m "Add new merged processed dataset"
+          git add merged_processed_data.csv.dvc .gitignore && git commit -m'Add new merged processed dataset'
 
-      - name: Push data to DVC
+      - name: Push changes git
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.TOKEN }}
+          branch: ${{ github.ref }}
+
+      - name: Push data dvc
         run: poetry run dvc push -r origin
-
-
 
 
