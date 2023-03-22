@@ -37,7 +37,7 @@ jobs:
           branch: ${{ github.ref }}
 
       - name: Push data dvc
-        run: poetry run dvc push -r origin
+        run: poetry run dvc push -r origin --auth ${{ secrets.DAGSHUB_TOKEN }}
 
 
   preprocess_air_data:
