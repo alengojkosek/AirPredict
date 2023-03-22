@@ -24,8 +24,7 @@ jobs:
 
       - name: Commit data
         run: |
-          poetry run dvc add raw_air_data.csv
-          git add raw_air_data.csv.dvc && git commit -m'Add new raw air dataset'
+          git add .gitignore raw_air_data.csv.dvc && git commit -m'Add new raw air dataset'
 
       - name: Push changes git
         uses: ad-m/github-push-action@master
