@@ -32,7 +32,7 @@ jobs:
         run: poetry install --no-interaction --no-root
 
       - name: Test air url status
-        run: poetry run python src/data/test_air.py
+        run: poetry run pytest
 
       - name: fetch_air_data
         run: poetry run python src/data/fetch_air_data.py
@@ -147,7 +147,7 @@ jobs:
         run: poetry install --no-interaction --no-root
 
       - name: Test weather url status
-        run: poetry run python src/data/test_weather.py
+        run: poetry run pytest
 
       - name: Pull data from DVC
         run: poetry run dvc pull -r origin -f
