@@ -6,11 +6,9 @@ jobs:
   fetch_air_data:
     runs-on: ubuntu-latest
 
-    outputs:
-      sha_new: ${{steps.sha_new.outputs.SHA_NEW}}
-
-    permissions:
-      contents: write
+    strategy:
+      matrix:
+        python-version: [ "3.9" ]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -45,21 +43,15 @@ jobs:
       - name: Push data dvc
         run: poetry run dvc push -r origin
 
-      - name: Get commit SHA and store it in GITHUB_OUTPUT
-        id: sha_new
-        run: echo "SHA_NEW=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
 
   preprocess_air_data:
     runs-on: ubuntu-latest
     needs: fetch_air_data
-    outputs:
-      sha_new: ${{steps.sha_new.outputs.SHA_NEW}}
-    permissions:
-      contents: write
+    strategy:
+      matrix:
+        python-version: [ "3.9" ]
     steps:
-      - env:
-          SHA_NEW: ${{ needs.fetch_air_data.outputs.sha_new }}
       - uses: actions/checkout@v3
         with:
           ref: ${{ needs.fetch_air_data.outputs.sha_new }}
@@ -97,10 +89,6 @@ jobs:
 
       - name: Push data dvc
         run: poetry run dvc push -r origin
-
-      - name: Get commit SHA and store it in GITHUB_OUTPUT
-        id: sha_new
-        run: echo "SHA_NEW=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
 
   fetch_weather_data:
