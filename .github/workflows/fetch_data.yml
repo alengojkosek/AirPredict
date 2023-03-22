@@ -143,9 +143,6 @@ jobs:
       - name: Install dependencies
         run: poetry install --no-interaction --no-root
 
-      - name: Pull data and dvc fetch
-        run: git pull && poetry run dvc fetch
-
       - name: Pull data from DVC
         run: poetry run dvc pull -r origin -f
 
@@ -202,9 +199,6 @@ jobs:
       - name: Install dependencies
         run: poetry install --no-interaction --no-root
 
-      - name: Pull data and dvc fetch
-        run: git pull && poetry run dvc fetch
-
       - name: Pull data from DVC
         run: poetry run dvc pull -r origin -f
 
@@ -260,9 +254,6 @@ jobs:
           cache: poetry
       - name: Install dependencies
         run: poetry install --no-interaction --no-root
-
-      - name: Pull data and dvc fetch
-        run: git pull && poetry run dvc fetch
 
       - name: Pull data from DVC
         run: poetry run dvc pull -r origin -f
