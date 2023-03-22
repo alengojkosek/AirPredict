@@ -1,4 +1,4 @@
-name: Fetch Data Job
+name: Fetch Data Pipeline
 on:
   push:
 
@@ -24,11 +24,11 @@ jobs:
 
       - name: Commit data to DVC
         run: |
-          dvc add data/raw/raw_air_data.csv
-          dvc commit -m "Add new raw air dataset"
+          poetry run dvc add data/raw/raw_air_data.csv
+          poetry run dvc commit -m "Add new raw air dataset"
 
       - name: Push data to DVC
-        run: dvc push -r origin
+        run: poetry run dvc push -r origin
 
 
   preprocess_air_data:
@@ -49,18 +49,18 @@ jobs:
         run: poetry install --no-interaction --no-root
 
       - name: Pull data from DVC
-        run: dvc pull
+        run: poetry run dvc pull
 
       - name: preprocess_air_data
         run: poetry run python src/data/preprocess_air_data.py
 
       - name: Commit data to DVC
         run: |
-          dvc add data/processed/preprocessed_air_data.csv
-          dvc commit -m "Add new preprocessed air dataset"
+          poetry run dvc add data/processed/preprocessed_air_data.csv
+          poetry run dvc commit -m "Add new preprocessed air dataset"
 
       - name: Push data to DVC
-        run: dvc push -r origin
+        run: poetry run dvc push -r origin
 
   fetch_weather_data:
     runs-on: ubuntu-latest
@@ -80,18 +80,18 @@ jobs:
         run: poetry install --no-interaction --no-root
 
       - name: Pull data from DVC
-        run: dvc pull
+        run: poetry run dvc pull
 
       - name: fetch_weather_data
         run: poetry run python src/data/fetch_weather_data.py
 
       - name: Commit data to DVC
         run: |
-          dvc add data/raw/raw_weather_data.csv
-          dvc commit -m "Add new raw weather dataset"
+          poetry run dvc add data/raw/raw_weather_data.csv
+          poetry run dvc commit -m "Add new raw weather dataset"
 
       - name: Push data to DVC
-        run: dvc push -r origin
+        run: poetry run dvc push -r origin
 
   preprocess_weather_data:
     runs-on: ubuntu-latest
@@ -111,18 +111,18 @@ jobs:
         run: poetry install --no-interaction --no-root
 
       - name: Pull data from DVC
-        run: dvc pull
+        run: poetry run dvc pull
 
       - name: preprocess_weather_data
         run: poetry run python src/data/preprocess_weather_data.py
 
       - name: Commit data to DVC
         run: |
-          dvc add data/processed/preprocessed_weather_data.csv
-          dvc commit -m "Add new preprocessed weather dataset"
+          poetry run dvc add data/processed/preprocessed_weather_data.csv
+          poetry run dvc commit -m "Add new preprocessed weather dataset"
 
       - name: Push data to DVC
-        run: dvc push -r origin
+        run: poetry run dvc push -r origin
 
   merge_processed_data:
     runs-on: ubuntu-latest
@@ -142,18 +142,18 @@ jobs:
         run: poetry install --no-interaction --no-root
 
       - name: Pull data from DVC
-        run: dvc pull
+        run: poetry run dvc pull
 
       - name: merge_processed_data
         run: poetry run python src/data/merge_processed_data_data.py
 
       - name: Commit data to DVC
         run: |
-          dvc add data/processed/merged_processed_data.csv
-          dvc commit -m "Add new merged processed dataset"
+          poetry run dvc add data/processed/merged_processed_data.csv
+          poetry run dvc commit -m "Add new merged processed dataset"
 
       - name: Push data to DVC
-        run: dvc push -r origin
+        run: poetry run dvc push -r origin
 
 
 
