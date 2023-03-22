@@ -94,7 +94,8 @@ jobs:
         run: git pull && poetry run dvc fetch
 
       - name: Pull data from DVC
-        run: poetry run dvc pull -v
+        run: poetry run dvc pull -r origin -f
+
 
       - name: preprocess_air_data
         run: poetry run python src/data/preprocess_air_data.py
