@@ -88,7 +88,7 @@ jobs:
         run: poetry install --no-interaction --no-root
 
       - name: Pull data from DVC
-        run: git pull && poetry run dvc pull -f
+        run: git pull && poetry run dvc fetch && poetry run dvc pull -v
 
       - name: preprocess_air_data
         run: poetry run python src/data/preprocess_air_data.py
