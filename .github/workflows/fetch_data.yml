@@ -6,11 +6,6 @@ jobs:
   fetch_air_data:
     runs-on: ubuntu-latest
 
-    outputs:
-      sha_new: ${{steps.sha_new.outputs.SHA_NEW}}
-
-    permissions:
-      contents: write
 
     strategy:
       matrix:
