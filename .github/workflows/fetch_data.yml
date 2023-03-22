@@ -5,11 +5,10 @@ on:
 jobs:
   fetch_air_data:
     runs-on: ubuntu-latest
-
-
-    strategy:
-      matrix:
-        python-version: [ "3.9" ]
+    outputs:
+      sha_new: ${{steps.sha_new.outputs.SHA_NEW}}
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v3
         with:
@@ -56,10 +55,6 @@ jobs:
       sha_new: ${{steps.sha_new.outputs.SHA_NEW}}
     permissions:
       contents: write
-
-    strategy:
-      matrix:
-        python-version: [ "3.9" ]
     steps:
       - env:
           SHA_NEW: ${{ needs.fetch_air_data.outputs.sha_new }}
