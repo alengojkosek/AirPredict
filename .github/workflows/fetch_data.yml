@@ -22,12 +22,18 @@ jobs:
       - name: fetch_air_data
         run: poetry run python src/data/fetch_air_data.py
 
-      - name: Commit data to DVC
+      - name: Commit data
         run: |
           poetry run dvc add raw_air_data.csv
-          poetry run dvc commit -m "Add new raw air dataset"
+          git add raw_air_data.csv.dvc && git commit -m'Add new raw air dataset'
 
-      - name: Push data to DVC
+      - name: Push changes git
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.TOKEN }}
+          branch: ${{ github.ref }}
+
+      - name: Push data dvc
         run: poetry run dvc push -r origin
 
 
