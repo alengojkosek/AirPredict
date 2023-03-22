@@ -22,6 +22,9 @@ jobs:
       - name: fetch_air_data
         run: poetry run python src/data/fetch_air_data.py
 
+      - name: Git global
+        run: git config --global user.email "alen.gojkosek@student.um.si" && git config --global user.name "alengojkosek"
+
       - name: Commit data
         run: |
           poetry run dvc add raw_air_data.csv
