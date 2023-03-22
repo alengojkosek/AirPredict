@@ -24,7 +24,7 @@ jobs:
 
       - name: Commit data to DVC
         run: |
-          poetry run dvc add data/raw/raw_air_data.csv
+          poetry run dvc add raw_air_data.csv
           poetry run dvc commit -m "Add new raw air dataset"
 
       - name: Push data to DVC
@@ -56,7 +56,7 @@ jobs:
 
       - name: Commit data to DVC
         run: |
-          poetry run dvc add data/processed/preprocessed_air_data.csv
+          poetry run dvc add preprocessed_air_data.csv
           poetry run dvc commit -m "Add new preprocessed air dataset"
 
       - name: Push data to DVC
@@ -87,7 +87,7 @@ jobs:
 
       - name: Commit data to DVC
         run: |
-          poetry run dvc add data/raw/raw_weather_data.csv
+          poetry run dvc add raw_weather_data.csv
           poetry run dvc commit -m "Add new raw weather dataset"
 
       - name: Push data to DVC
@@ -118,7 +118,7 @@ jobs:
 
       - name: Commit data to DVC
         run: |
-          poetry run dvc add data/processed/preprocessed_weather_data.csv
+          poetry run dvc add preprocessed_weather_data.csv
           poetry run dvc commit -m "Add new preprocessed weather dataset"
 
       - name: Push data to DVC
@@ -149,7 +149,7 @@ jobs:
 
       - name: Commit data to DVC
         run: |
-          poetry run dvc add data/processed/merged_processed_data.csv
+          poetry run dvc add merged_processed_data.csv
           poetry run dvc commit -m "Add new merged processed dataset"
 
       - name: Push data to DVC
