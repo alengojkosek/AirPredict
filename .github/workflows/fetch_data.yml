@@ -11,10 +11,6 @@ jobs:
 
     permissions:
       contents: write
-<<<<<<< HEAD
-=======
-
->>>>>>> 6dcbbac0b4a590bad3393fa7ba38ecd62ce0c228
 
     strategy:
       matrix:
