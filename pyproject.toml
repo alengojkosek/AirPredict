@@ -15,14 +15,12 @@ scikit-learn = "^1.2.1"
 pytest = "^7.2.1"
 requests = "^2.28.2"
 flask-cors = "^3.0.10"
-<<<<<<< HEAD
 dvc = "^2.51.0"
 great-expectations = "^0.16.1"
 evidently = "^0.2.7"
 llvmlite = "^0.39.1"
-=======
-dvc = "^2.30.0"
->>>>>>> 6dcbbac0b4a590bad3393fa7ba38ecd62ce0c228
+
+
 
 
 [tool.poetry.group.dev.dependencies]
