@@ -18,8 +18,8 @@ flask-cors = "^3.0.10"
 dvc = "^2.51.0"
 great-expectations = "^0.16.1"
 evidently = "^0.2.7"
-llvmlite = "^0.39.1"
-
+numpy = "1.23.5"
+mlflow = "^2.2.2"
 
 
 
