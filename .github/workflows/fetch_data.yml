@@ -11,10 +11,15 @@ jobs:
 
     permissions:
       contents: write
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6dcbbac0b4a590bad3393fa7ba38ecd62ce0c228
 
     strategy:
       matrix:
         python-version: [ "3.9" ]
+
     steps:
       - uses: actions/checkout@v3
         with:
@@ -28,6 +33,9 @@ jobs:
           cache: poetry
       - name: Install dependencies
         run: poetry install --no-interaction --no-root
+
+      - name: Test air url status
+        run: poetry run pytest
 
       - name: fetch_air_data
         run: poetry run python src/data/fetch_air_data.py
@@ -40,14 +48,14 @@ jobs:
           poetry run dvc add raw_air_data.csv
           git add raw_air_data.csv.dvc .gitignore && git commit -m'Add new raw air dataset'
 
+      - name: Push data dvc
+        run: poetry run dvc push -r origin
+
       - name: Push changes git
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.TOKEN }}
           branch: ${{ github.ref }}
-
-      - name: Push data dvc
-        run: poetry run dvc push -r origin
 
       - name: Get commit SHA and store it in GITHUB_OUTPUT
         id: sha_new
@@ -57,6 +65,7 @@ jobs:
   preprocess_air_data:
     runs-on: ubuntu-latest
     needs: fetch_air_data
+
     outputs:
       sha_new: ${{steps.sha_new.outputs.SHA_NEW}}
     permissions:
@@ -68,11 +77,11 @@ jobs:
     steps:
       - env:
           SHA_NEW: ${{ needs.fetch_air_data.outputs.sha_new }}
+        run: echo "$SHA_NEW"
       - uses: actions/checkout@v3
         with:
           ref: ${{ needs.fetch_air_data.outputs.sha_new }}
           fetch-depth: 0
-      - uses: actions/checkout@v3
       - name: Install Poetry
         uses: snok/install-poetry@v1
       - name: Set up Python ${{ matrix.python-version }}
@@ -84,7 +93,7 @@ jobs:
         run: poetry install --no-interaction --no-root
 
       - name: Pull data from DVC
-        run: poetry run dvc pull
+        run: poetry run dvc pull -r origin -f
 
       - name: preprocess_air_data
         run: poetry run python src/data/preprocess_air_data.py
@@ -97,14 +106,14 @@ jobs:
           poetry run dvc add preprocessed_air_data.csv
           git add preprocessed_air_data.csv.dvc .gitignore && git commit -m'Add new preprocessed air dataset'
 
+      - name: Push data dvc
+        run: poetry run dvc push -r origin
+
       - name: Push changes git
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.TOKEN }}
           branch: ${{ github.ref }}
-
-      - name: Push data dvc
-        run: poetry run dvc push -r origin
 
       - name: Get commit SHA and store it in GITHUB_OUTPUT
         id: sha_new
@@ -114,11 +123,22 @@ jobs:
   fetch_weather_data:
     runs-on: ubuntu-latest
     needs: preprocess_air_data
+    outputs:
+      sha_new: ${{steps.sha_new.outputs.SHA_NEW}}
+    permissions:
+      contents: write
+
     strategy:
       matrix:
         python-version: [ "3.9" ]
     steps:
+      - env:
+          SHA_NEW: ${{ needs.preprocess_air_data.outputs.sha_new }}
+        run: echo "$SHA_NEW"
       - uses: actions/checkout@v3
+        with:
+          ref: ${{ needs.preprocess_air_data.outputs.sha_new }}
+          fetch-depth: 0
       - name: Install Poetry
         uses: snok/install-poetry@v1
       - name: Set up Python ${{ matrix.python-version }}
@@ -129,8 +149,11 @@ jobs:
       - name: Install dependencies
         run: poetry install --no-interaction --no-root
 
+      - name: Test weather url status
+        run: poetry run pytest
+
       - name: Pull data from DVC
-        run: poetry run dvc pull
+        run: poetry run dvc pull -r origin -f
 
       - name: fetch_weather_data
         run: poetry run python src/data/fetch_weather_data.py
@@ -152,14 +175,29 @@ jobs:
       - name: Push data dvc
         run: poetry run dvc push -r origin
 
+      - name: Get commit SHA and store it in GITHUB_OUTPUT
+        id: sha_new
+        run: echo "SHA_NEW=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
   preprocess_weather_data:
     runs-on: ubuntu-latest
     needs: fetch_weather_data
+    outputs:
+      sha_new: ${{steps.sha_new.outputs.SHA_NEW}}
+    permissions:
+      contents: write
+
     strategy:
       matrix:
         python-version: [ "3.9" ]
     steps:
+      - env:
+          SHA_NEW: ${{ needs.fetch_weather_data.outputs.sha_new }}
+        run: echo "$SHA_NEW"
       - uses: actions/checkout@v3
+        with:
+          ref: ${{ needs.fetch_weather_data.outputs.sha_new }}
+          fetch-depth: 0
       - name: Install Poetry
         uses: snok/install-poetry@v1
       - name: Set up Python ${{ matrix.python-version }}
@@ -171,7 +209,7 @@ jobs:
         run: poetry install --no-interaction --no-root
 
       - name: Pull data from DVC
-        run: poetry run dvc pull
+        run: poetry run dvc pull -r origin -f
 
       - name: preprocess_weather_data
         run: poetry run python src/data/preprocess_weather_data.py
@@ -193,14 +231,29 @@ jobs:
       - name: Push data dvc
         run: poetry run dvc push -r origin
 
+      - name: Get commit SHA and store it in GITHUB_OUTPUT
+        id: sha_new
+        run: echo "SHA_NEW=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
   merge_processed_data:
     runs-on: ubuntu-latest
     needs: preprocess_weather_data
+    outputs:
+      sha_new: ${{steps.sha_new.outputs.SHA_NEW}}
+    permissions:
+      contents: write
+
     strategy:
       matrix:
         python-version: [ "3.9" ]
     steps:
+      - env:
+          SHA_NEW: ${{ needs.preprocess_weather_data.outputs.sha_new }}
+        run: echo "$SHA_NEW"
       - uses: actions/checkout@v3
+        with:
+          ref: ${{ needs.preprocess_weather_data.outputs.sha_new }}
+          fetch-depth: 0
       - name: Install Poetry
         uses: snok/install-poetry@v1
       - name: Set up Python ${{ matrix.python-version }}
@@ -212,10 +265,10 @@ jobs:
         run: poetry install --no-interaction --no-root
 
       - name: Pull data from DVC
-        run: poetry run dvc pull
+        run: poetry run dvc pull -r origin -f
 
       - name: merge_processed_data
-        run: poetry run python src/data/merge_processed_data_data.py
+        run: poetry run python src/data/merge_processed_data.py
 
       - name: Git global
         run: git config --global user.email "alen.gojkosek@student.um.si" && git config --global user.name "alengojkosek"
@@ -233,5 +286,9 @@ jobs:
 
       - name: Push data dvc
         run: poetry run dvc push -r origin
+
+      - name: Get commit SHA and store it in GITHUB_OUTPUT
+        id: sha_new
+        run: echo "SHA_NEW=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
 

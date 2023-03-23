@@ -20,4 +20,4 @@ forecast_data = forecast_data['hourly']
 
 df_forecast = pd.DataFrame(forecast_data) 
 
-forecast_df.to_csv(raw_weather_data.csv)
+df_forecast.to_csv('raw_weather_data.csv')

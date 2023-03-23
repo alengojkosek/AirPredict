@@ -128,3 +128,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 /raw_air_data.csv
+/preprocessed_air_data.csv
+/raw_weather_data.csv
+/preprocessed_weather_data.csv
+/merged_processed_data.csv

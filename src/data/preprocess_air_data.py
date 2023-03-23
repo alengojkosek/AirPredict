@@ -3,7 +3,6 @@ import numpy as np
 
 df = pd.read_csv('raw_air_data.csv')
 
-df['time'] = pd.to_datetime(df['time'])
 df['datum_do'] = pd.to_datetime(df['datum_do'])
 df['datum_od'] = pd.to_datetime(df['datum_od'])
 
