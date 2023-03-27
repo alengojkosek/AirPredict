@@ -42,7 +42,7 @@ jobs:
       - name: Commit data
         run: |
           poetry run dvc add raw_air_data.csv
-          git add raw_air_data.csv.dvc .gitignore && git commit -m'Add new raw air dataset'
+          git add data/raw/air/raw_air_data.csv.dvc .gitignore && git commit -m'Add new raw air dataset'
 
       - name: Push data dvc
         run: poetry run dvc push -r origin
@@ -100,7 +100,7 @@ jobs:
       - name: Commit data
         run: |
           poetry run dvc add preprocessed_air_data.csv
-          git add preprocessed_air_data.csv.dvc .gitignore && git commit -m'Add new preprocessed air dataset'
+          git add data/processed/air/preprocessed_air_data.csv.dvc .gitignore && git commit -m'Add new preprocessed air dataset'
 
       - name: Push data dvc
         run: poetry run dvc push -r origin
@@ -160,7 +160,7 @@ jobs:
       - name: Commit data
         run: |
           poetry run dvc add raw_weather_data.csv
-          git add raw_weather_data.csv.dvc .gitignore && git commit -m'Add new raw weather dataset'
+          git add data/raw/weather/raw_weather_data.csv.dvc .gitignore && git commit -m'Add new raw weather dataset'
 
       - name: Push changes git
         uses: ad-m/github-push-action@master
@@ -216,7 +216,7 @@ jobs:
       - name: Commit data
         run: |
           poetry run dvc add preprocessed_weather_data.csv
-          git add preprocessed_weather_data.csv.dvc .gitignore && git commit -m'Add new preprocessed weather dataset'
+          git add data/processed/weather/preprocessed_weather_data.csv.dvc .gitignore && git commit -m'Add new preprocessed weather dataset'
 
       - name: Push changes git
         uses: ad-m/github-push-action@master
@@ -272,7 +272,8 @@ jobs:
       - name: Commit data
         run: |
           poetry run dvc add merged_processed_data.csv
-          git add merged_processed_data.csv.dvc .gitignore && git commit -m'Add new merged processed dataset'
+          git add data/processed/merged_processed_data.csv.dvc .gitignore && git commit -m'Add new merged processed dataset'
+
 
       - name: Push changes git
         uses: ad-m/github-push-action@master
