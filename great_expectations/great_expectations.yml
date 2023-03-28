@@ -25,7 +25,7 @@ datasources:
             - data_asset_name
           pattern: (.*)
         class_name: InferredAssetFilesystemDataConnector
-        base_directory: ../
+        base_directory: /
       default_runtime_data_connector_name:
         assets:
           my_runtime_asset_name:
