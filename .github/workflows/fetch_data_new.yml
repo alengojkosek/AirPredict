@@ -43,10 +43,10 @@ jobs:
         run: git config --global user.email "alen.gojkosek@student.um.si" && git config --global user.name "alengojkosek"
 
       - name: Commit data
+        if: ${{ always() }}
         run: |
           git add current_data.csv.dvc reference_data.csv.dvc .gitignore && git commit -m'Add new current dataset'
           poetry run dvc add current_data.csv reference_data.csv
-          continue-on-error: true
 
       - name: Push changes git
         uses: ad-m/github-push-action@master
