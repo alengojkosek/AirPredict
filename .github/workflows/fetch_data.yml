@@ -34,7 +34,7 @@ jobs:
         run: poetry run pytest
 
       - name: fetch_air_data
-        run: poetry run python src/data/fetch_air_data.py && mv raw_air_data.csv data/raw/air/
+        run: poetry run python src/data/fetch_air_data.py && mv raw_air_data.csv ./data/raw/air/
       - name: Git global
         run: git config --global user.email "alen.gojkosek@student.um.si" && git config --global user.name "alengojkosek"
 
@@ -348,3 +348,4 @@ jobs:
       - name: Get commit SHA and store it in GITHUB_OUTPUT
         id: sha_new
         run: echo "SHA_NEW=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
