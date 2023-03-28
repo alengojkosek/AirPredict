@@ -411,9 +411,9 @@ jobs:
       - name: Install dependencies
         run: poetry install --no-interaction --no-root
 
-      - name: Run Checkpoint
+      - name: Run Evidently
         run: |
-          poetry run python great_expectations/checkpoints/run_my_checkpoint.py
+          poetry run python src/data/evidently_test.py
 
   netlify_ge:
     runs-on: ubuntu-latest
