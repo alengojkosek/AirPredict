@@ -35,7 +35,7 @@ jobs:
 
       - name: Run Checkpoint
         run: |
-          poetry run -vv python great_expectations/checkpoints/run_my_checkpoint.py
+          poetry run python great_expectations/checkpoints/run_my_checkpoint.py
 
   test_data:
     runs-on: ubuntu-latest
