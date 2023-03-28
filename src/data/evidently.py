@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import evidently
+from evidently import Report
 import warnings
 
 warnings.filterwarnings('ignore')
