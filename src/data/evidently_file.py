@@ -18,6 +18,7 @@ from evidently.tabs import DataDriftTab
 
 from evidently.model_profile import Profile
 from evidently.profile_sections import DataDriftProfileSection
+from evidently.test_preset import DataDriftTestPreset
 
 from evidently.analyzers.data_drift_analyzer import DataDriftAnalyzer
 
