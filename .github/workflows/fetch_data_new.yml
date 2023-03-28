@@ -36,6 +36,11 @@ jobs:
       - name: Pull data from DVC
         run: poetry run dvc pull -r origin -f
 
+      - name: Move data files
+        run: |
+          mv current_data.csv data/processed/
+          mv reference_data.csv data/processed/
+
       - name: Run Checkpoint
         run: |
           poetry run python great_expectations/checkpoints/run_my_checkpoint.py
