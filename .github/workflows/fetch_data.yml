@@ -35,6 +35,7 @@ jobs:
 
       - name: fetch_air_data
         run: poetry run python src/data/fetch_air_data.py
+
       - name: Git global
         run: git config --global user.email "alen.gojkosek@student.um.si" && git config --global user.name "alengojkosek"
 
@@ -86,6 +87,10 @@ jobs:
           cache: poetry
       - name: Install dependencies
         run: poetry install --no-interaction --no-root
+
+      - name: workaround for detached HEAD
+        run: |
+          git checkout ${GITHUB_REF#refs/heads/}
 
       - name: Pull data from DVC
         run: poetry run dvc pull -r origin -f
@@ -143,6 +148,10 @@ jobs:
           cache: poetry
       - name: Install dependencies
         run: poetry install --no-interaction --no-root
+
+      - name: workaround for detached HEAD
+        run: |
+          git checkout ${GITHUB_REF#refs/heads/}
 
       - name: Test weather url status
         run: poetry run pytest
@@ -413,7 +422,7 @@ jobs:
 
       - name: Run Evidently
         run: |
-          poetry run python src/data/evidently_test.py
+          poetry run python src/data/evidently.py
 
   netlify_ge:
     runs-on: ubuntu-latest
