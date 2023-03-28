@@ -43,7 +43,7 @@ jobs:
 
       - name: Run Evidently
         run: |
-          poetry run python src/data/evidently.py
+          poetry run python src/data/evidently_file.py
 
   netlify_ge:
     runs-on: ubuntu-latest
