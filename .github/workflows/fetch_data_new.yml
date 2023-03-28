@@ -3,10 +3,8 @@ on:
   push:
 
 jobs:
-
   create_reference_and_current_data:
     runs-on: ubuntu-latest
-    needs: merge_processed_data
     outputs:
       sha_new: ${{steps.sha_new.outputs.SHA_NEW}}
     permissions:
@@ -16,12 +14,8 @@ jobs:
       matrix:
         python-version: [ "3.9" ]
     steps:
-      - env:
-          SHA_NEW: ${{ needs.merge_processed_data.outputs.sha_new }}
-        run: echo "$SHA_NEW"
       - uses: actions/checkout@v3
         with:
-          ref: ${{ needs.merge_processed_data.outputs.sha_new }}
           fetch-depth: 0
       - name: Install Poetry
         uses: snok/install-poetry@v1
