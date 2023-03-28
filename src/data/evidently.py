@@ -1,12 +1,6 @@
 import pandas as pd
 import numpy as np
-from evidently.report import Report
-from evidently.metrics import base_metrics, regression_metrics
-from evidently.metric import DataDrift, TargetDrift, DataQuality
-from evidently.presets import DataDriftPreset, TargetDriftPreset, DataQualityPreset, RegressionPreset
-from evidently.test_suite import TestSuite
-from evidently.tests.base import generate_tests
-from evidently.test import DataStabilityTest, NoTargetPerformanceTest, RegressionTest
+import evidently
 import warnings
 
 warnings.filterwarnings('ignore')
