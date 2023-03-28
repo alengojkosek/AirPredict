@@ -13,6 +13,14 @@ from evidently.tests.base_test import generate_column_tests
 from evidently.test_preset import DataStabilityTestPreset, NoTargetPerformanceTestPreset
 from evidently.tests import *
 
+from evidently.dashboard import Dashboard
+from evidently.tabs import DataDriftTab
+
+from evidently.model_profile import Profile
+from evidently.profile_sections import DataDriftProfileSection
+
+from evidently.analyzers.data_drift_analyzer import DataDriftAnalyzer
+
 data = pd.read_csv('./data/processed/current_data.csv')
 
 airpredict_data = data.copy()
