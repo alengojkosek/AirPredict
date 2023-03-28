@@ -43,4 +43,3 @@ report = Report(
 )
 
 report.run(reference_data=reference, current_data=current)
-report.save("evidently_report.html")
