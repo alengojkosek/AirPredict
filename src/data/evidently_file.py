@@ -12,8 +12,6 @@ from evidently.test_suite import TestSuite
 from evidently.tests.base_test import generate_column_tests
 from evidently.test_preset import DataStabilityTestPreset, NoTargetPerformanceTestPreset
 from evidently.tests import *
-warnings.filterwarnings('ignore')
-warnings.simplefilter('ignore')
 
 data = pd.read_csv('./data/processed/current_data.csv')
 
