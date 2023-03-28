@@ -33,6 +33,9 @@ jobs:
       - name: Install dependencies
         run: poetry install --no-interaction --no-root
 
+      - name: Pull data from DVC
+        run: poetry run dvc pull -r origin -f
+
       - name: Run Checkpoint
         run: |
           poetry run python great_expectations/checkpoints/run_my_checkpoint.py
