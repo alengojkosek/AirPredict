@@ -38,7 +38,7 @@ current = airpredict_data.sample(n=5000, replace=False)
 
 report = Report(
     [
-        DataDriftTestPreset(),
+        DataDriftPreset(),
     ]
 )
 
