@@ -132,3 +132,5 @@ dmypy.json
 /raw_weather_data.csv
 /preprocessed_weather_data.csv
 /merged_processed_data.csv
+/current_data.csv
+/reference_data.csv
