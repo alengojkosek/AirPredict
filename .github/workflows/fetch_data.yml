@@ -444,7 +444,7 @@ jobs:
       - name: Install dependencies
         run: poetry install --no-interaction --no-root
 
-      - name: Deploy DataDocs to Netlify
+      - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2
         with:
           publish-dir: "great_expectations/uncommitted/data_docs/local_site"
