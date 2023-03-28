@@ -38,8 +38,8 @@ jobs:
 
       - name: Move data files
         run: |
-          mv current_data.csv data/processed/
-          mv reference_data.csv data/processed/
+          mv current_data.csv data/processed
+          mv reference_data.csv data/processed
 
       - name: Run Checkpoint
         run: |
