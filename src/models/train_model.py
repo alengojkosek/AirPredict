@@ -6,7 +6,7 @@ import pickle
 import mlflow
 import numpy as np
 
-
+mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 mlflow.autolog(exclusive=False)
 
 
