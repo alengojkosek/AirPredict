@@ -10,7 +10,7 @@ MLFLOW_TRACKING_URI="https://dagshub.com/alengojkosek/AirPredict.mlflow"
 mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 mlflow.autolog(exclusive=False)
 
-mlflow.start_run()
+#mlflow.start_run()
 # Load the dataset
 df = pd.read_csv('data/processed/current_data.csv')
 
