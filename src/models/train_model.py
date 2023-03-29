@@ -6,8 +6,11 @@ import pickle
 import mlflow
 import numpy as np
 
+MLFLOW_TRACKING_URI="https://dagshub.com/alengojkosek/AirPredict.mlflow"
 mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 mlflow.autolog(exclusive=False)
+
+mlflow.set_experiment(experiment_name="Air")
 
 
 with mlflow.start_run():
