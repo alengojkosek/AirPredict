@@ -18,7 +18,7 @@ mlflow.set_registry_uri("af9dc140062b507e1c608237487e976c3d8e7d78")
 #mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 #mlflow.set_experiment("Air")
 
-mlflow.autolog(exclusive=False)
+#mlflow.autolog(exclusive=False)
 
 with mlflow.start_run():
 
