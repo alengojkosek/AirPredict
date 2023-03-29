@@ -4,92 +4,6 @@ on:
 
 jobs:
 
-  test_data:
-    runs-on: ubuntu-latest
-    #needs: validate_data
-    #outputs:
-    #  sha_new: ${{steps.sha_new.outputs.SHA_NEW}}
-    permissions:
-      contents: write
-
-    strategy:
-      matrix:
-        python-version: [ "3.9" ]
-    steps:
-     # - env:
-      #    SHA_NEW: ${{ needs.validate_data.outputs.sha_new }}
-       # run: echo "$SHA_NEW"
-      - uses: actions/checkout@v3
-        with:
-        #  ref: ${{ needs.validate_data.outputs.sha_new }}
-          fetch-depth: 0
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-          cache: poetry
-      - name: Install dependencies
-        run: poetry install --no-interaction --no-root
-
-      - name: Pull data from DVC
-        run: poetry run dvc pull -r origin -f
-
-      - name: Move data files
-        run: |
-          mv current_data.csv data/processed
-          mv reference_data.csv data/processed
-
-      - name: Run Evidently
-        run: |
-          poetry run python src/data/evidently_file.py
-
-  netlify_ge:
-    runs-on: ubuntu-latest
-    needs: test_data
-    outputs:
-      sha_new: ${{steps.sha_new.outputs.SHA_NEW}}
-    permissions:
-      contents: write
-
-    strategy:
-      matrix:
-        python-version: [ "3.9" ]
-    steps:
-      - env:
-          SHA_NEW: ${{ needs.test_data.outputs.sha_new }}
-        run: echo "$SHA_NEW"
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{ needs.test_data.outputs.sha_new }}
-          fetch-depth: 0
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-          cache: poetry
-      - name: Install dependencies
-        run: poetry install --no-interaction --no-root
-
-      - name: Deploy to Netlify
-        uses: nwtgck/actions-netlify@v1.2
-        with:
-          publish-dir: "great_expectations/uncommitted/data_docs/local_site"
-          production-deploy: true
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-
-
-
-
-
-
-
-
   create_reference_and_current_data:
     runs-on: ubuntu-latest
     outputs:
@@ -152,11 +66,9 @@ jobs:
         run: echo "SHA_NEW=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
 
-
-
   validate_data:
     runs-on: ubuntu-latest
-    #needs: create_reference_and_current_data
+    needs: create_reference_and_current_data
     outputs:
       sha_new: ${{steps.sha_new.outputs.SHA_NEW}}
     permissions:
@@ -166,12 +78,12 @@ jobs:
       matrix:
         python-version: [ "3.9" ]
     steps:
-      #- env:
-      #    SHA_NEW: ${{ needs.create_reference_and_current_data.outputs.sha_new }}
-      #  run: echo "$SHA_NEW"
+      - env:
+          SHA_NEW: ${{ needs.create_reference_and_current_data.outputs.sha_new }}
+        run: echo "$SHA_NEW"
       - uses: actions/checkout@v3
         with:
-          #   ref: ${{ needs.create_reference_and_current_data.outputs.sha_new }}
+          ref: ${{ needs.create_reference_and_current_data.outputs.sha_new }}
           fetch-depth: 0
       - name: Install Poetry
         uses: snok/install-poetry@v1
@@ -194,3 +106,82 @@ jobs:
       - name: Run Checkpoint
         run: |
           poetry run python great_expectations/checkpoints/run_my_checkpoint.py
+
+  netlify_ge:
+    runs-on: ubuntu-latest
+    needs: test_data
+    outputs:
+      sha_new: ${{steps.sha_new.outputs.SHA_NEW}}
+    permissions:
+      contents: write
+
+    strategy:
+      matrix:
+        python-version: [ "3.9" ]
+    steps:
+      - env:
+          SHA_NEW: ${{ needs.test_data.outputs.sha_new }}
+        run: echo "$SHA_NEW"
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ needs.test_data.outputs.sha_new }}
+          fetch-depth: 0
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: poetry
+      - name: Install dependencies
+        run: poetry install --no-interaction --no-root
+
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v1.2
+        with:
+          publish-dir: "great_expectations/uncommitted/data_docs/local_site"
+          production-deploy: true
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+  test_data:
+    runs-on: ubuntu-latest
+    needs: validate_data
+    outputs:
+      sha_new: ${{steps.sha_new.outputs.SHA_NEW}}
+    permissions:
+      contents: write
+
+    strategy:
+      matrix:
+        python-version: [ "3.9" ]
+    steps:
+      - env:
+          SHA_NEW: ${{ needs.validate_data.outputs.sha_new }}
+        run: echo "$SHA_NEW"
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ needs.validate_data.outputs.sha_new }}
+          fetch-depth: 0
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: poetry
+      - name: Install dependencies
+        run: poetry install --no-interaction --no-root
+
+      - name: Pull data from DVC
+        run: poetry run dvc pull -r origin -f
+
+      - name: Move data files
+        run: |
+          mv current_data.csv data/processed
+          mv reference_data.csv data/processed
+
+      - name: Run Evidently
+        run: |
+          poetry run python src/data/evidently_file.py
