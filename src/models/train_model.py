@@ -12,9 +12,7 @@ MLFLOW_TRACKING_URI="https://dagshub.com/alengojkosek/AirPredict.mlflow"
 
 
 
-MLFLOW_USERNAME = os.environ.get("alengojkosek")
-MLFLOW_PASSWORD = os.environ.get("af9dc140062b507e1c608237487e976c3d8e7d78")
-
+MLFLOW_USERNAME = os.environ.get("af9dc140062b507e1c608237487e976c3d8e7d78")
 mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 mlflow.set_experiment("Air")
 
