@@ -10,6 +10,9 @@ MLFLOW_TRACKING_URI="https://dagshub.com/alengojkosek/AirPredict.mlflow"
 mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 mlflow.autolog(exclusive=False)
 
+client = mlflow.tracking.MlflowClient()
+client.create_experiment('your_experiment_name')
+
 with mlflow.start_run():
     # Load the dataset
     df = pd.read_csv('merged_processed_data.csv')
