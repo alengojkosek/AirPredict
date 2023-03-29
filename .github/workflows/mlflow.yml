@@ -34,7 +34,7 @@ jobs:
           mv current_data.csv data/processed
 
       - name: MLFLOW credentials
-        run: export MLFLOW_TRACKING_USERNAME=af9dc140062b507e1c608237487e976c3d8e7d78 && export MLFLOW_EXPERIMENT_NAME=Air
+        run: export MLFLOW_TRACKING_USERNAME=af9dc140062b507e1c608237487e976c3d8e7d78 && export MLFLOW_EXPERIMENT_NAME=Air && export MLFLOW_TRACKING_URI=https://dagshub.com/alengojkosek/AirPredict.mlflow
 
       - name: fetch_air_data
         run: poetry run python src/models/train_model.py
