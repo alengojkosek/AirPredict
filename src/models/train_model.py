@@ -6,9 +6,16 @@ import pickle
 import mlflow
 import os
 
-MLFLOW_TRACKING_URI="https://dagshub.com/alengojkosek/AirPredict.mlflow"
+MLFLOW_TRACKING_URI = "https://dagshub.com/alengojkosek/AirPredict.mlflow"
+MLFLOW_REGISTRY_URI = "https://dagshub.com/alengojkosek/AirPredict.registry"
 
+# Set the tracking URI and registry URI, and authentication token
 mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+mlflow.set_registry_uri(MLFLOW_REGISTRY_URI)
+mlflow.set_registry_uri("af9dc140062b507e1c608237487e976c3d8e7d78")
+
+#MLFLOW_TRACKING_URI="https://dagshub.com/alengojkosek/AirPredict.mlflow"
+#mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 #mlflow.set_experiment("Air")
 
 mlflow.autolog(exclusive=False)
@@ -66,5 +73,3 @@ with mlflow.start_run():
     mlflow.log_metric("MAE", mae)
     mlflow.log_metric("MSE", mse)
     mlflow.log_metric("Train score", train_score)
-
-    autolog_run = mlflow.last_active_run()
