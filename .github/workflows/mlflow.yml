@@ -3,7 +3,7 @@ on:
   push:
 
 jobs:
-  fetch_air_data:
+  mlflow:
     runs-on: ubuntu-latest
     outputs:
       sha_new: ${{steps.sha_new.outputs.SHA_NEW}}
