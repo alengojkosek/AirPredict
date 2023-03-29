@@ -4,10 +4,14 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 import pickle
 import mlflow
-AUTHORIZATION_REQUIRED = 1008;
+import os
+
 MLFLOW_TRACKING_URI='https://dagshub.com/alengojkosek/AirPredict.mlflow'
 mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 mlflow.set_experiment('AirPredict')
+
+os.environ['MLFLOW_TRACKING_USERNAME'] = 'alengojkosek'
+os.environ['MLFLOW_TRACKING_PASSWORD'] = 'af9dc140062b507e1c608237487e976c3d8e7d78'
 
 mlflow.autolog(exclusive=False)
 
