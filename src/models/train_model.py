@@ -14,7 +14,7 @@ mlflow.autolog(exclusive=False)
 # Load the dataset
 df = pd.read_csv('merged_processed_data.csv')
 df = df.drop(columns=['o3', 'benzen', 'co', 'no2', 'so2', 'Unnamed: 0','ge_dolzina','ge_sirina','pm2.5', 'nadm_visina','time', 'merilno_mesto', 'datum_od', 'datum_do', 'Unnamed: 0_y', 'Unnamed: 0_x'])
-x = df.drop('pm10'  axis=1)
+x = df.drop('pm10', axis=1)
 y = df['pm10']
 
 # Split the dataset into training and testing sets
