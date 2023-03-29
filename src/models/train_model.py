@@ -4,72 +4,62 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 import pickle
 import mlflow
-import os
 
-MLFLOW_TRACKING_URI = "https://dagshub.com/alengojkosek/AirPredict.mlflow"
-MLFLOW_REGISTRY_URI = "https://dagshub.com/alengojkosek/AirPredict.registry"
 
-# Set the tracking URI and registry URI, and authentication token
+MLFLOW_TRACKING_URI="https://dagshub.com/alengojkosek/AirPredict.mlflow"
 mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
-mlflow.set_registry_uri(MLFLOW_REGISTRY_URI)
-mlflow.set_registry_uri("af9dc140062b507e1c608237487e976c3d8e7d78")
+mlflow.set_experiment("Air")
 
-#MLFLOW_TRACKING_URI="https://dagshub.com/alengojkosek/AirPredict.mlflow"
-#mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
-#mlflow.set_experiment("Air")
+mlflow.autolog(exclusive=False)
 
-#mlflow.autolog(exclusive=False)
+mlflow.start_run()
+# Load the dataset
+df = pd.read_csv('data/processed/current_data.csv')
 
-with mlflow.start_run():
+x = df.drop('pm10', axis=1)
+y = df['pm10']
 
-    # Load the dataset
-    df = pd.read_csv('data/processed/current_data.csv')
+# Split the dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=42)
 
-    x = df.drop('pm10', axis=1)
-    y = df['pm10']
+model = LinearRegression()
 
-    # Split the dataset into training and testing sets
-    X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=42)
+model.fit(X_train, y_train)
 
-    model = LinearRegression()
+# Save the model to disk
+with open('LG_model_3.pkl', 'wb') as f:
+    pickle.dump(model, f)
 
-    model.fit(X_train, y_train)
+# Use the model to make predictions on the training data
+y_pred_train = model.predict(X_train)
 
-    # Save the model to disk
-    with open('LG_model_3.pkl', 'wb') as f:
-        pickle.dump(model, f)
+# Evaluate the performance of the model on the training data
+train_score = model.score(X_train, y_train)
+print(f"Training R-squared score: {train_score:.2f}")
 
+# Calculate mean squared error (MSE) on the testing data
+mse = mean_squared_error(y_train, y_pred_train)
+print(f"Training MSE: {mse:.2f}")
 
-    # Use the model to make predictions on the training data
-    y_pred_train = model.predict(X_train)
+# Calculate mean absolute error (MAE) on the testing data
+mae = mean_absolute_error(y_train, y_pred_train)
+print(f"Training MAE: {mae:.2f}")
 
-    # Evaluate the performance of the model on the training data
-    train_score = model.score(X_train, y_train)
-    print(f"Training R-squared score: {train_score:.2f}")
+# Use the model to make predictions on the testing data
+y_pred_test = model.predict(X_test)
 
-    # Calculate mean squared error (MSE) on the testing data
-    mse = mean_squared_error(y_train, y_pred_train)
-    print(f"Training MSE: {mse:.2f}")
+# Evaluate the performance of the model on the testing data
+test_score = model.score(X_test, y_test)
+print(f"Testing R-squared score: {test_score:.2f}")
 
-    # Calculate mean absolute error (MAE) on the testing data
-    mae = mean_absolute_error(y_train, y_pred_train)
-    print(f"Training MAE: {mae:.2f}")
+# Calculate mean squared error (MSE) on the testing data
+mse = mean_squared_error(y_test, y_pred_test)
+print(f"Testing MSE: {mse:.2f}")
 
-    # Use the model to make predictions on the testing data
-    y_pred_test = model.predict(X_test)
+# Calculate mean absolute error (MAE) on the testing data
+mae = mean_absolute_error(y_test, y_pred_test)
+print(f"Testing MAE: {mae:.2f}")
 
-    # Evaluate the performance of the model on the testing data
-    test_score = model.score(X_test, y_test)
-    print(f"Testing R-squared score: {test_score:.2f}")
-
-    # Calculate mean squared error (MSE) on the testing data
-    mse = mean_squared_error(y_test, y_pred_test)
-    print(f"Testing MSE: {mse:.2f}")
-
-    # Calculate mean absolute error (MAE) on the testing data
-    mae = mean_absolute_error(y_test, y_pred_test)
-    print(f"Testing MAE: {mae:.2f}")
-
-    mlflow.log_metric("MAE", mae)
-    mlflow.log_metric("MSE", mse)
-    mlflow.log_metric("Train score", train_score)
+mlflow.log_metric("MAE", mae)
+mlflow.log_metric("MSE", mse)
+mlflow.log_metric("Train score", train_score)
