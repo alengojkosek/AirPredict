@@ -12,7 +12,7 @@ mlflow.autolog(exclusive=False)
 
 #mlflow.start_run()
 # Load the dataset
-df = pd.read_csv('merged_processed_data.csv')
+df = pd.read_csv('preprocessed_air_data.csv')
 
 x = df.drop('pm10', axis=1)
 y = df['pm10']
