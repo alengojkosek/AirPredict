@@ -8,8 +8,15 @@ import mlflow
 
 MLFLOW_TRACKING_URI="https://dagshub.com/alengojkosek/AirPredict.mlflow"
 
-mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
-mlflow.set_experiment("alengojkosek/AirPredict")
+#mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+
+
+
+MLFLOW_USERNAME = os.environ.get("alengojkosek")
+MLFLOW_PASSWORD = os.environ.get("af9dc140062b507e1c608237487e976c3d8e7d78")
+
+mlflow.set_tracking_uri(f"{MLFLOW_TRACKING_URI}?username={MLFLOW_USERNAME}&password={MLFLOW_PASSWORD}")
+mlflow.set_experiment("AirPredict")
 
 mlflow.autolog(exclusive=False)
 
