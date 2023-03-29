@@ -67,4 +67,4 @@ with mlflow.start_run():
     mlflow.log_metric("MSE", mse)
     mlflow.log_metric("Train score", train_score)
 
-autolog_run = mlflow.last_active_run()
+#autolog_run = mlflow.last_active_run()
