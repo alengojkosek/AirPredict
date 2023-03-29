@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 import pickle
 import mlflow
-
+AUTHORIZATION_REQUIRED = 1008;
 MLFLOW_TRACKING_URI='https://dagshub.com/alengojkosek/AirPredict.mlflow'
 mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 mlflow.set_experiment('AirPredict')
