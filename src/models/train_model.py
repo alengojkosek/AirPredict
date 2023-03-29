@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 import pickle
 import mlflow
-
+import numpy as np
 
 MLFLOW_TRACKING_URI="https://dagshub.com/alengojkosek/AirPredict.mlflow"
 mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
@@ -16,6 +16,8 @@ df = pd.read_csv('merged_processed_data.csv')
 df = df.drop(columns=['sifra','o3', 'benzen', 'co', 'no2', 'so2', 'Unnamed: 0','ge_dolzina','ge_sirina','pm2.5', 'nadm_visina','time', 'merilno_mesto', 'datum_od', 'datum_do', 'Unnamed: 0_y', 'Unnamed: 0_x'])
 df = df.interpolate()
 df = df.dropna()
+df = df.replace('<2', np.nan)
+df = df.replace('<1', np.nan)
 x = df.drop('pm10', axis=1)
 y = df['pm10']
 
