@@ -12,9 +12,9 @@ mlflow.autolog(exclusive=False)
 
 #mlflow.start_run()
 # Load the dataset
-df = pd.read_csv('preprocessed_air_data.csv')
-
-x = df.drop('pm10', axis=1)
+df = pd.read_csv('merged_processed_data.csv')
+df = df.drop(columns=['o3', 'benzen', 'co', 'no2', 'so2', 'Unnamed: 0','ge_dolzina','ge_sirina','pm2.5', 'nadm_visina','time', 'merilno_mesto', 'datum_od', 'datum_do', 'Unnamed: 0_y', 'Unnamed: 0_x'])
+x = df.drop('pm10'  axis=1)
 y = df['pm10']
 
 # Split the dataset into training and testing sets
@@ -25,7 +25,7 @@ model = LinearRegression()
 model.fit(X_train, y_train)
 
 # Save the model to disk
-with open('LG_model_3.pkl', 'wb') as f:
+with open('LG_model_4.pkl', 'wb') as f:
     pickle.dump(model, f)
 
 # Use the model to make predictions on the training data
