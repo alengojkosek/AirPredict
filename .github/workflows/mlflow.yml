@@ -26,6 +26,13 @@ jobs:
       - name: Install dependencies
         run: poetry install --no-interaction --no-root
 
+      - name: Pull data from DVC
+        run: poetry run dvc pull -r origin -f
+
+      - name: Move data files
+        run: |
+          mv current_data.csv data/processed
+
       - name: MLFLOW credentials
         run: export MLFLOW_TRACKING_USERNAME=af9dc140062b507e1c608237487e976c3d8e7d78 && export MLFLOW_EXPERIMENT_NAME=Air
 
