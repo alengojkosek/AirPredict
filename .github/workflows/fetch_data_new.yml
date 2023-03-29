@@ -107,35 +107,6 @@ jobs:
         run: |
           poetry run python great_expectations/checkpoints/run_my_checkpoint.py
 
-  netlify_ge:
-    runs-on: ubuntu-latest
-    needs: validate_data
-    outputs:
-      sha_new: ${{steps.sha_new.outputs.SHA_NEW}}
-    permissions:
-      contents: write
-
-    strategy:
-      matrix:
-        python-version: [ "3.9" ]
-    steps:
-      - env:
-          SHA_NEW: ${{ needs.validate_data.outputs.sha_new }}
-        run: echo "$SHA_NEW"
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{ needs.validate_data.outputs.sha_new }}
-          fetch-depth: 0
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-          cache: poetry
-      - name: Install dependencies
-        run: poetry install --no-interaction --no-root
-
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2
         with:
