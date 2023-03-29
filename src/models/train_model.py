@@ -9,7 +9,7 @@ import os
 MLFLOW_TRACKING_URI="https://dagshub.com/alengojkosek/AirPredict.mlflow"
 
 mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
-mlflow.set_experiment("Air")
+#mlflow.set_experiment("Air")
 
 mlflow.autolog(exclusive=False)
 
