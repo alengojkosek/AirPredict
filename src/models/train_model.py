@@ -11,6 +11,18 @@ MLFLOW_TRACKING_URI="https://dagshub.com/alengojkosek/AirPredict.mlflow"
 mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 os.environ['MLFLOW_TRACKING_USERNAME'] = 'alengojkosek'
 os.environ['MLFLOW_TRACKING_PASSWORD'] = 'af9dc140062b507e1c608237487e976c3d8e7d78'
+experiment = mlflow.set_experiment("Air")
+
+# Get Experiment Details
+print("Experiment_id: {}".format(experiment.experiment_id))
+print("Artifact Location: {}".format(experiment.artifact_location))
+print("Tags: {}".format(experiment.tags))
+print("Lifecycle_stage: {}".format(experiment.lifecycle_stage))
+
+
+print("Current registry uri: {}".format(mr_uri))
+tracking_uri = mlflow.get_tracking_uri()
+print("Current tracking uri: {}".format(tracking_uri))
 mlflow.autolog(exclusive=False)
 
 with mlflow.start_run():
