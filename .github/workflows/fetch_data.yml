@@ -458,7 +458,7 @@ jobs:
       - name: Git global
         run: git config --global user.email "alen.gojkosek@student.um.si" && git config --global user.name "alengojkosek"
 
-      - name: Commit data
+      - name: Commit data evidently
         run: |
           poetry run dvc add report_e.json
           git add report_e.json.dvc .gitignore && git commit -m'Add new evidently report'
