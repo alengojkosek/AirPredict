@@ -19,10 +19,6 @@ print("Artifact Location: {}".format(experiment.artifact_location))
 print("Tags: {}".format(experiment.tags))
 print("Lifecycle_stage: {}".format(experiment.lifecycle_stage))
 
-
-print("Current registry uri: {}".format(mr_uri))
-tracking_uri = mlflow.get_tracking_uri()
-print("Current tracking uri: {}".format(tracking_uri))
 mlflow.autolog(exclusive=False)
 
 with mlflow.start_run():
